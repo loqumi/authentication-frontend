@@ -13,7 +13,7 @@ const FormAddUser = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/users", {
+      await axios.post("https://loqumi-auth-app.herokuapp.com/users", {
         name: name,
         email: email,
         password: password,

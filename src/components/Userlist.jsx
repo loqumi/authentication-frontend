@@ -25,7 +25,9 @@ const Userlist = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get("http://localhost:5000/users").catch(exit);
+      const res = await axios
+        .get("https://loqumi-auth-app.herokuapp.com/users")
+        .catch(exit);
       setUsers(res.data);
     })();
   }, [exit]);
@@ -37,7 +39,7 @@ const Userlist = () => {
       return [...prev, { ...user, status: !user.status }];
     }, []);
     await axios
-      .post(`http://localhost:5000/users/block`, data)
+      .post(`https://loqumi-auth-app.herokuapp.com/users/block`, data)
       .then(() => {
         setUsers((prev) =>
           prev.reduce((prev, curr) => {
@@ -53,7 +55,7 @@ const Userlist = () => {
 
   const deleteUsers = async () => {
     await axios
-      .post(`http://localhost:5000/users/delete`, selectedUsers)
+      .post(`https://loqumi-auth-app.herokuapp.com/users/delete`, selectedUsers)
       .then(() => {
         if (selectedUsers.includes(user.uuid)) {
           logout();
