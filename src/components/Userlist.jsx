@@ -144,7 +144,7 @@ const Userlist = () => {
               <td>{user.email}</td>
               <td>{user.createdAt}</td>
               <td>{user.updatedAt}</td>
-              <td>{user.status ? "banned" : "unbanned"}</td>
+              <td>{Number(user.status) ? "banned" : "unbanned"}</td>
             </tr>
           ))}
         </tbody>
