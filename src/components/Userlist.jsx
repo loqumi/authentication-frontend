@@ -51,6 +51,8 @@ const Userlist = () => {
             return [...prev, user];
           }, [])
         );
+      })
+      .then(() => {
         if (selectedUsers.includes(user.uuid)) logout();
       })
       .catch(exit);
@@ -128,7 +130,7 @@ const Userlist = () => {
           </tr>
         </thead>
         <tbody>
-          {users?.map((user, index) => (
+          {users?.map((user) => (
             <tr key={user.uuid}>
               <td>
                 <label className="checkbox">
