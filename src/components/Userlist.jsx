@@ -26,7 +26,7 @@ const Userlist = () => {
   useEffect(() => {
     (async () => {
       const res = await axios
-        .get("https://loqumi-auth-app.herokuapp.com/users")
+        .get("https://authentication-backend-production.up.railway.app/users")
         .catch(exit);
       setUsers(res.data);
     })();
@@ -39,7 +39,10 @@ const Userlist = () => {
       return [...prev, { ...user, status: !user.status }];
     }, []);
     await axios
-      .post(`https://loqumi-auth-app.herokuapp.com/users/block`, data)
+      .post(
+        `https://authentication-backend-production.up.railway.app/users/block`,
+        data
+      )
       .then(() => {
         setUsers((prev) =>
           prev.reduce((prev, curr) => {
@@ -55,7 +58,10 @@ const Userlist = () => {
 
   const deleteUsers = async () => {
     await axios
-      .post(`https://loqumi-auth-app.herokuapp.com/users/delete`, selectedUsers)
+      .post(
+        `https://authentication-backend-production.up.railway.app/users/delete`,
+        selectedUsers
+      )
       .then(() => {
         if (selectedUsers.includes(user.uuid)) {
           logout();
@@ -88,12 +94,6 @@ const Userlist = () => {
       <h2 className="subtitle">Toolbar</h2>
       <div className="field is-grouped">
         <p className="control">
-          <button className="button" onClick={() => handleSelectUsers(users)}>
-            <IoCheckboxOutline />
-            Select / Unselect
-          </button>
-        </p>
-        <p className="control">
           <button className="button is-link" onClick={blockUsers}>
             <IoBan />
             Block / Unblock
@@ -110,24 +110,26 @@ const Userlist = () => {
       <table className="table is-striped is-fullwidth">
         <thead>
           <tr>
-            <th>No</th>
+            <th>
+              <button
+                className="button"
+                onClick={() => handleSelectUsers(users)}
+              >
+                <IoCheckboxOutline />
+                Select
+              </button>
+            </th>
+            <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Created</th>
             <th>Last login</th>
             <th>Status</th>
-            <th>Select</th>
           </tr>
         </thead>
         <tbody>
           {users?.map((user, index) => (
             <tr key={user.uuid}>
-              <td>{index + 1}</td>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.createdAt}</td>
-              <td>{user.updatedAt}</td>
-              <td>{user.status ? "banned" : "unbanned"}</td>
               <td>
                 <label className="checkbox">
                   <input
@@ -137,6 +139,12 @@ const Userlist = () => {
                   />
                 </label>
               </td>
+              <td>{user.uuid}</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.createdAt}</td>
+              <td>{user.updatedAt}</td>
+              <td>{user.status ? "banned" : "unbanned"}</td>
             </tr>
           ))}
         </tbody>

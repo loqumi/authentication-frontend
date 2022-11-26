@@ -14,7 +14,7 @@ export const LoginUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const response = await axios.post(
-        "https://loqumi-auth-app.herokuapp.com/login",
+        "https://authentication-backend-production.up.railway.app/login",
         {
           email: user.email,
           password: user.password,
@@ -33,7 +33,7 @@ export const LoginUser = createAsyncThunk(
 export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   try {
     const response = await axios.get(
-      "https://loqumi-auth-app.herokuapp.com/me"
+      "https://authentication-backend-production.up.railway.app/me"
     );
     return response.data;
   } catch (error) {
@@ -45,7 +45,9 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
 });
 
 export const LogOut = createAsyncThunk("user/LogOut", async () => {
-  await axios.delete("https://loqumi-auth-app.herokuapp.com/logout");
+  await axios.delete(
+    "https://authentication-backend-production.up.railway.app/logout"
+  );
 });
 
 export const authSlice = createSlice({

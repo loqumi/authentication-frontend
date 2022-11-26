@@ -13,12 +13,15 @@ const FormAddUser = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://loqumi-auth-app.herokuapp.com/users", {
-        name: name,
-        email: email,
-        password: password,
-        confPassword: confPassword,
-      });
+      await axios.post(
+        "https://authentication-backend-production.up.railway.app/users",
+        {
+          name: name,
+          email: email,
+          password: password,
+          confPassword: confPassword,
+        }
+      );
       navigate("/users");
     } catch (error) {
       if (error.response) {
