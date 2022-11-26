@@ -7,7 +7,7 @@ import { LogOut, reset } from "../features/authSlice";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
- 
+
   const logout = () => {
     dispatch(LogOut());
     dispatch(reset());
@@ -22,7 +22,7 @@ const Navbar = () => {
         aria-label="main navigation"
       >
         <div className="navbar-brand">
-          <NavLink to="/dashboard" className="navbar-item">
+          <NavLink to="/users" className="navbar-item">
             <img src={logo} width="112" height="28" alt="logo" />
           </NavLink>
 
