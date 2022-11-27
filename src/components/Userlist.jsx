@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { IoTrashBin, IoBan, IoCheckboxOutline } from "react-icons/io5";
+import {
+  IoTrashBin,
+  IoLockClosedOutline,
+  IoLockOpenOutline,
+  IoCheckboxOutline,
+} from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { LogOut, reset } from "../features/authSlice";
@@ -36,11 +41,38 @@ const Userlist = () => {
     const data = selectedUsers.reduce((prev, curr) => {
       const user = users.find((user) => user.uuid === curr);
       if (!user) return prev;
-      return [...prev, { ...user, status: !user.status }];
+      return [...prev, { ...user, status: true }];
     }, []);
     await axios
       .post(
         `https://authentication-backend-production.up.railway.app/users/block`,
+        data
+      )
+      .then(() => {
+        if (selectedUsers.includes(user.uuid)) {
+          logout();
+        } else {
+          setUsers((prev) =>
+            prev.reduce((prev, curr) => {
+              const user = data.find((user) => user.uuid === curr.uuid);
+              if (!user) return [...prev, curr];
+              return [...prev, user];
+            }, [])
+          );
+        }
+      })
+      .catch(exit);
+  };
+
+  const unBlockUsers = async () => {
+    const data = selectedUsers.reduce((prev, curr) => {
+      const user = users.find((user) => user.uuid === curr);
+      if (!user) return prev;
+      return [...prev, { ...user, status: false }];
+    }, []);
+    await axios
+      .post(
+        `https://authentication-backend-production.up.railway.app/users/unblock`,
         data
       )
       .then(() => {
@@ -51,9 +83,6 @@ const Userlist = () => {
             return [...prev, user];
           }, [])
         );
-      })
-      .then(() => {
-        if (selectedUsers.includes(user.uuid)) logout();
       })
       .catch(exit);
   };
@@ -96,15 +125,19 @@ const Userlist = () => {
       <h2 className="subtitle">Toolbar</h2>
       <div className="field is-grouped">
         <p className="control">
-          <button className="button is-link" onClick={blockUsers}>
-            <IoBan />
-            Block / Unblock
-          </button>
-        </p>
-        <p className="control">
           <button className="button is-danger" onClick={deleteUsers}>
             <IoTrashBin />
             Delete user
+          </button>
+        </p>
+        <p className="control">
+          <button className="button is-link" onClick={blockUsers}>
+            <IoLockClosedOutline />
+          </button>
+        </p>
+        <p className="control">
+          <button className="button is-link" onClick={unBlockUsers}>
+            <IoLockOpenOutline />
           </button>
         </p>
       </div>
